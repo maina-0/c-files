@@ -33,7 +33,18 @@ int main(){
     return 0;
     int code3=system("pwd");
     if (code3 != 0){
-        printf("err printing working dir");
-    }
-    return 0;
+        perror("err printing working dir\n");
+    }return 0;
+    int code4=system("sudo dnf --installroot=/sandbox/chroot --releasever=40 groupinstall core");
+    if (code4!=0){
+        perror("problem installing chroot:-\n");
+    }return 0;
+
+    int code5=system("sudo chroot /sandboxes/chroot");
+    if (code5!=0){
+        perror("problem opening chroot: \n");
+        
+    }return 0;
+
+
 }
