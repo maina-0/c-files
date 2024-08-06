@@ -2,6 +2,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <errno.h>
+#include <stdlib.h>
 
 
 
@@ -30,5 +31,9 @@ int main(){
         perror("problems creating sandbox1\n");
     }
     return 0;
-
+    int code3=system("pwd");
+    if (code3 != 0){
+        printf("err printing working dir");
+    }
+    return 0;
 }
