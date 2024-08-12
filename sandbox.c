@@ -14,7 +14,11 @@ int main(){
     if (code0 == 0) {
         printf("Directory created successfully.\n");
     } else {
-        perror("Failed to create directory\n");
+        perror("Failed to create directory \n \
+                try running the command with elevated privelages \n \
+                exiting .....\n");
+                
+        exit(1);
     }
     //moving to new dir "sandbox" now
 
@@ -39,18 +43,93 @@ NetworkManager audit firewalld selinux-policy-targeted kbd zchunk sudo \
 vim-minimal systemd-udev rootfiles less iputils deltarpm sqlite lz4");
     if (code4!=0){
         perror("problem installing chroot into sandbox dir:-\n");
-    }return 0;
+        exit(1);
+}return 0;    //after the dnf install command the sandbox will now be populated with dir's like the host root
 
-    int code5=mkdir("cd /sandbox/etc/", 0777);
+
+
+
+    int code5=mkdir("cd /sandbox/etc/", 0777); 
     int code6=system("touch resolv.conf");
-    int code7=system("touch resolv.conf");
-
-
-    int code6=system("sudo /mnt/etc/resolv.conf");
     if (code6!=0){
-        perror("problem opening chroot: \n");
+        printf("error creating the resolve.conf:->");
+        perror("\n");
+    }
+    int code7=system("cd / \
+    mount --bind /etc/resolv.conf /sandbox/etc/resolv.conf"); //the success of this command is crutial as it's success guarantees that the hadware will be be abble to resolve network traffick going to the jail
+    if(code7!=0){
+        printf("error binding to resolve.config \n \
+        exiting...\n");
+        exit(1);
+    }
+
+
+
+        int code8=system(" mount --bind /dev /sandbox/dev \
+    mount --bind /proc /sandbox/proc \
+    mount --bind /sys /sandbox/sys ");                  //media and block devices
+    if(code8!=0){
+        printf("error binding to resolve.config \n \
+        exiting...\n");
+        exit(1);
+    }
+
+int code9=(chdir("/sandbox/sys/"));
+if(code9!=0){
+    printf("error cdanging dir /sandbox/sys/");
+    perror("-\n");
+    exit(1);}
+    
+int code10=mkdir("fs", 0777); 
+    if (code10!=0){
+        printf("error creating fs dir:->");
+        perror("\n");
+        exit(1);
+    }
+
+
+int code11=(chdir("/sandbox/sys/fs/"));
+if(code11!=0){
+    printf("error cdanging dir into /sandbox/sys/fs/");
+    perror("-\n");
+    exit(1);}
+
+
+int code12=mkdir("cgroup", 0777); 
+    if (code10!=0){
+        printf("error creating cgroup dir:->");
+        perror("\n");
+        exit(1);
+    }
+
+
+int code11=(chdir("/sandbox/sys/fs/cgroup/"));
+if(code11!=0){
+    printf("error cdanging dir into /sandbox/sys/fs/cgroup/");
+    perror("-\n");
+    exit(1);}
+
+int code12=system("cd /sandbox/ \
+mount -t cgroup cgroup /sandbox/sys/fs/cgroup");
+    if(code12!=0){
+        printf("error binding cgroup \n \
+        exiting...\n");
+        exit(1);
+        perror("-\n");
+    }
+
+int code13=system("cd / \
+unshare --fork --pid --mount /bin/bash \
+chroot /sandbox/ /bin/bash");
+    if(code13!=0){
+        printf("error binding cgroup \n \
+        exiting...\n");
+        exit(1);
+        perror("-\n");
+    }
+
         
-    }return 0;
+
 
 
 }
