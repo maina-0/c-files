@@ -18,7 +18,7 @@ int file(){
     FILE *fl;
 
     fl=fopen(name,"w");
-    printf("empty file created called %shas been created.\n",name);
+    printf("empty file created called %s has been created.\n",name);
     fclose(fl);
     if (fclose==0)
     printf("err closing file;%c \n");
@@ -34,8 +34,12 @@ int write(){
 
     if(fli != NULL)
     {   char *text;
-        system("cls");
-        printf("file opened sucesfully \n please type and when done press enter,\n incase you want to jump to a new line,\n you will have to use an \\ n without the space in between:- \n");
+        system("clear");
+        printf("file opened sucesfully \n \
+        please type and when done press enter,\n \
+        incase you want to jump to a new line,\n \
+        you will have to use an \\ n \
+        without the space in between:- \n");
         text = fgets(text,10000,stdin);
         setbuf(fli,NULL);
         fprintf(fli,text);
@@ -63,9 +67,10 @@ int dyww(){
 
 int main()
 {
-    int nm();
-    int file();
-    int dyww();
+     nm();
+     file();
+    // dyww();
+   // write();
 
     return 0;
    
