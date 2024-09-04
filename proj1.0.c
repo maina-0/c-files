@@ -1,10 +1,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <errno.h>
 
 
 
 static char name[20];
+int nm();
+int file();
+int write();
+int dyww();
 
 
 int nm(){
@@ -33,31 +38,49 @@ int write(){
     fli=fopen(name,"a+");
 
     if(fli != NULL)
-    {   char *text;
+    {   
         system("clear");
         printf("file opened sucesfully \n \
         please type and when done press enter,\n \
         incase you want to jump to a new line,\n \
-        you will have to use an \\ n \
+        you will have to use an \\ n \n\
         without the space in between:- \n");
-        text = fgets(text,10000,stdin);
+        char text[1000];
+         
         setbuf(fli,NULL);
-        fprintf(fli,text);
-        if (fclose==0)
-        printf("err closing file;%c \n");
+        printf("enter text: \n");
+        if (fgets(text,sizeof(text),stdin)!=NULL){
+            fprintf(fli,"%s",text);
+            return 0;
+            
+        }
+        else{
+            fclose(fli);
+            perror("err opening file; \n");
+            return 1;
+        }
+        }else{
+            return 1;
+        }
+
+        if(!fclose(fli)){
+        perror("err closing file: \n");
+        return 1;
+    }
         return 0;
     }
 
 
-}
+
 
 int dyww(){
 
-     char *o;
+
+    char *yes ="y";
+    char *o;
     printf("Do you want to add anything to your file:-\n y -yes \n n -no \nAns:");
     o = fgets(o,2,stdin);
-    char *y="y";
-    if (strcmp( o,y) == 0){
+    if (strcmp(o,yes) == 0){
         write();
     }
     else{
@@ -67,10 +90,10 @@ int dyww(){
 
 int main()
 {
-     nm();
-     file();
-    // dyww();
-   // write();
+    nm();
+    file();
+    dyww();
+    
 
     return 0;
    
