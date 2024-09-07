@@ -76,56 +76,48 @@ vim-minimal systemd-udev rootfiles less iputils deltarpm sqlite lz4");
 
 int code9=(chdir("/sandbox/sys/"));
 if(code9!=0){
-    printf("error cdanging dir /sandbox/sys/");
-    perror("-\n");
+    perror("error cdanging dir /sandbox/sys/-\n");
     exit(1);}
     
 int code10=mkdir("fs", 0777); 
     if (code10!=0){
-        printf("error creating fs dir:->");
-        perror("\n");
+        perror("error creating fs dir:->\n");
         exit(1);
     }
 
 
 int code11=(chdir("/sandbox/sys/fs/"));
 if(code11!=0){
-    printf("error cdanging dir into /sandbox/sys/fs/");
-    perror("-\n");
+    perror("error changing dir into /sandbox/sys/fs/-\n");
     exit(1);}
 
 
 int code12=mkdir("cgroup", 0777); 
     if (code10!=0){
-        printf("error creating cgroup dir:->");
-        perror("\n");
+        perror("error creating cgroup dir:->");
         exit(1);
     }
 
 
 int code11=(chdir("/sandbox/sys/fs/cgroup/"));
 if(code11!=0){
-    printf("error cdanging dir into /sandbox/sys/fs/cgroup/");
-    perror("-\n");
+    perror("error cdanging dir into /sandbox/sys/fs/cgroup/");
     exit(1);}
 
 int code12=system("cd /sandbox/ \
 mount -t cgroup cgroup /sandbox/sys/fs/cgroup");
     if(code12!=0){
-        printf("error binding cgroup \n \
-        exiting...\n");
+        perror("error binding cgroup\n");
         exit(1);
-        perror("-\n");
     }
 
 int code13=system("cd / \
 unshare --fork --pid --mount /bin/bash \
 chroot /sandbox/ /bin/bash");
     if(code13!=0){
-        printf("error binding cgroup \n \
+        perror("error binding cgroup \n \
         exiting...\n");
         exit(1);
-        perror("-\n");
     }
 
         
