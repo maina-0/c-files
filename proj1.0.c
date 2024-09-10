@@ -49,18 +49,10 @@ int write(){
          
         setbuf(fli,NULL);
         printf("enter text: \n");
-        if (fgets(text,sizeof(text),stdin)!=NULL){
-            fprintf(fli,"%s",text);
-            return 0;
-            
-        }
-        else{
-            fclose(fli);
-            perror("err opening file; \n");
-            return 1;
-        }
-        }else{
-            return 1;
+        fgets(text,sizeof(text),stdin);
+        fprintf(fli,"%s",text);
+        fclose(fli);
+        
         }
 
         if(!fclose(fli)){
@@ -68,7 +60,7 @@ int write(){
         return 1;
     }
         return 0;
-    }
+}
 
 
 
