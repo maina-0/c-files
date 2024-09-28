@@ -2,6 +2,8 @@
 #include <sys/socket.h>
 #include <errno.h>
 #include <netinet/in.h>
+#include <stdbool.h>
+#include <unistd.h>
 
 
 
@@ -35,9 +37,30 @@ int main(){
     //clientaddr.sin_family=AF_INET;
     
     int clientFD=accept(socketfd,(struct sockaddr *)&clientaddr,&addrsize);//alternatively in the last argument give pointer
+    
+    char buffer[1024];
+    
+    while(true){ 
+
+    ssize_t amntrecv=recv(clientFD,buffer,1024,0);
 
 
+    if (amntrecv>0){
+            buffer[amntrecv]=0;
+            printf("-------------\n");
+            printf("%s \n",buffer);
+            printf("-------------\n");
         
+        }
+
+        if (amntrecv==0){
+            break;
+        }
+
+    }   
+
+    close(clientFD);
+    shutdown(socketfd,SHUT_RDWR);
 
     return 0;
 }
