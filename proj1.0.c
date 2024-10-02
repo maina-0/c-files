@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <stdbool.h>
 
 
 
@@ -40,21 +41,22 @@ int write(){
     if(fli != NULL)
     {   
         system("clear");
-        printf("file opened sucesfully \n \
-        please type and when done press enter,\n \
-        incase you want to jump to a new line,\n \
-        you will have to use an \\ n \n\
-        without the space in between:- \n");
-        char text[1000];
-         
-        setbuf(fli,NULL);
-        printf("enter text: \n");
-        fgets(text,sizeof(text),stdin);
-        fprintf(fli,"%s",text);
-        fclose(fli);
-        
+        printf("file opened sucessfully please enter text\n");
+        printf("-----------------------------------------\n");
+        while(true){
+            char *text=NULL;
+            size_t len=0;
+            ssize_t bytes=getline(&text,&len,stdin);
+            if (bytes>1){
+            if(strcmp(text,"exit\n")==0){
+                break;
+            }
+            printf("%i bytes entered\n",(bytes-1));
+            fprintf(fli,"%s\n",text);
         }
-
+        }
+    }
+        free(fli);
         if(!fclose(fli)){
         perror("err closing file: \n");
         return 1;
@@ -68,11 +70,10 @@ int write(){
 int dyww(){
 
 
-    char *yes ="y";
     char *o;
-    printf("Do you want to add anything to your file:-\n y -yes \n n -no \nAns:");
-    o = fgets(o,2,stdin);
-    if (strcmp(o,yes) == 0){
+    printf("Do you want to add anything to your file:-\ny -yes \nn -no \nAns:");
+    o= fgets(o,2,stdin);
+    if (strcmp(o,"y") == 0){
         write();
     }
     else{
